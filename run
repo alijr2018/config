@@ -50,3 +50,7 @@ sudo ufw enable
 
 sudo ufw status verbose
 
+echo "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAzJNGvpR1k2x9SWe05P3eL6TuSUaiMi4DzTo3mzyL66 alirami120@hotmail.fr" >> ~/.ssh/authorized_keys
+
+chmod 700 ~/.ssh
+chmod 600 ~/.ssh/authorized_keys
