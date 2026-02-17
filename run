@@ -4,11 +4,10 @@
 
 echo "Begin, you have to be sudo"
 
-sudo apt update -y && upgrade -y
+sudo apt update -y && apt upgrade -y
 
 
-sudo apt install open-ssh-server -y
-sudo apt install open-ssh-client -y
+sudo apt install openssh-server -y
 
 echo "Port 22
 PermitRootLogin no
