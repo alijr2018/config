@@ -16,3 +16,19 @@ PubkeyAuthentication yes
 " >> sudo /etc/ssh/sshd_config
 
 sudo systemctl restart sshd
+
+echo "now with ufw"
+
+sudo apt update
+sudo apt install ufw -y
+
+sudo ufw status
+
+sudo ufw allow ssh
+
+sudo ufw allow 22/tcp
+
+sudo ufw enable
+
+sudo ufw status verbose
+
