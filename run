@@ -1,56 +1,49 @@
 #!/bin/bash
 
-#this config file for set-up ssh and docker
-set -e #option that causes the script to exit immediately if any command returns a non-zero exit status 
+# This config file for setting up SSH and Docker
+set -e  # Exit immediately if any command returns a non-zero exit status
 echo "Begin, you have to be sudo"
 
-sudo apt update -y && apt upgrade -y
+# Update system packages
+sudo apt update -y && sudo apt upgrade -y
 
-
+# Install openssh-server
 sudo apt install openssh-server -y
 
-# the problem with port in macos
-
-# echo "Port 22
-# PermitRootLogin no
-# PasswordAuthentication no
-# PubkeyAuthentication yes
-# " >>  /etc/ssh/sshd_config
-
-# sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
-# sudo sed -i 's/#Port 22/Port 22/' /etc/ssh/sshd_config
-# sudo sed -i 's/#PermitRootLogin.*/PermitRootLogin no/' /etc/ssh/sshd_config
-# sudo sed -i 's/#PasswordAuthentication.*/PasswordAuthentication no/' /etc/ssh/sshd_config
-# sudo sed -i 's/#PubkeyAuthentication.*/PubkeyAuthentication yes/' /etc/ssh/sshd_config
-
-# Configure SSH for public key authentication only
-sudo sed -i 's/#Port 22/Port 22/' /etc/ssh/sshd_config  # Make sure Port 22 is enabled
-sudo sed -i 's/#PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config  # Allow root login (optional)
+# Modify SSH configuration for public key authentication only
+sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak  # Backup the original file
+sudo sed -i 's/#Port 22/Port 22/' /etc/ssh/sshd_config  # Ensure Port 22 is enabled
+sudo sed -i 's/#PermitRootLogin.*/PermitRootLogin no/' /etc/ssh/sshd_config  # Disable root login
 sudo sed -i 's/#PasswordAuthentication.*/PasswordAuthentication no/' /etc/ssh/sshd_config  # Disable password authentication
 sudo sed -i 's/#PubkeyAuthentication.*/PubkeyAuthentication yes/' /etc/ssh/sshd_config  # Enable pubkey authentication
 sudo sed -i 's/#ChallengeResponseAuthentication.*/ChallengeResponseAuthentication no/' /etc/ssh/sshd_config  # Disable other auth methods
 
-# Optionally, allow everyone to connect (no user restrictions)
+# Optionally, allow all users to connect (can be restricted to specific users later)
 sudo sed -i '/^#AllowUsers/ c\AllowUsers *' /etc/ssh/sshd_config
 
+# Restart SSH to apply changes
 sudo systemctl restart sshd
 
-echo "now with ufw"
-
-sudo apt update
+# Install UFW and configure firewall
 sudo apt install ufw -y
 
-sudo ufw status
-
+# Allow SSH through the firewall
 sudo ufw allow ssh
-
 sudo ufw allow 22/tcp
 
+# Enable firewall
 sudo ufw enable
 
+# Check UFW status
 sudo ufw status verbose
 
+# Add public key to authorized_keys for the current user
+mkdir -p ~/.ssh
+touch ~/.ssh/authorized_keys
 echo "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAzJNGvpR1k2x9SWe05P3eL6TuSUaiMi4DzTo3mzyL66 alirami120@hotmail.fr" >> ~/.ssh/authorized_keys
 
+# Set proper permissions
 chmod 700 ~/.ssh
 chmod 600 ~/.ssh/authorized_keys
+
+echo "SSH setup complete. You can now use public key authentication to log in."
