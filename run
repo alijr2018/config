@@ -13,7 +13,7 @@ echo "Port 22
 PermitRootLogin no
 PasswordAuthentication no
 PubkeyAuthentication yes
-" >> sudo /etc/ssh/sshd_config
+" >>  /etc/ssh/sshd_config
 
 sudo systemctl restart sshd
 
