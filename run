@@ -30,7 +30,9 @@ sudo apt install ufw -y
 # Allow SSH through the firewall
 sudo ufw allow ssh
 sudo ufw allow 22/tcp
-
+# Set UFW to allow all incoming and outgoing traffic
+sudo ufw default allow incoming
+sudo ufw default allow outgoing
 # Enable firewall
 sudo ufw enable
 
