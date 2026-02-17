@@ -1,0 +1,19 @@
+#!/bin/bash
+
+#this config file for set-up ssh and docker
+
+echo "Begin, you have to be sudo"
+
+sudo apt update -y && upgrade -y
+
+
+sudo apt install open-ssh-server -y
+sudo apt install open-ssh-client -y
+
+echo "Port 22
+PermitRootLogin no
+PasswordAuthentication no
+PubkeyAuthentication yes
+" >> sudo /etc/ssh/sshd_config
+
+sudo systemctl restart sshd
